@@ -1,0 +1,20 @@
+{
+    "manifest_version": 2,
+    "version": "1.0",
+    "name": "GAS Pod",
+    "description": "A Pure Gas Price Extension",
+    "icons": {
+        "16": "logo_ethereum.png",
+        "48": "logo_ethereum.png",
+        "128": "logo_ethereum.png"
+    },
+    "browser_action": {
+        "default_popup": "index.html",
+        "default_title": "GAS Pod"
+    },
+    "background": {
+        "persistent": true,
+        "scripts": ["background.js"]
+    },
+    "permissions": ["tabs", "alarms"]
+}

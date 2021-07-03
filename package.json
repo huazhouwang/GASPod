@@ -1,0 +1,69 @@
+{
+    "name": "gas_pod",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "react": "^17.0.2",
+        "react-dom": "^17.0.2",
+        "react-scripts": "4.0.3",
+        "styled-components": "^5.3.0",
+        "typescript": "^4.1.2"
+    },
+    "scripts": {
+        "prepare": "husky install",
+        "lint": "eslint --ignore-path .gitignore './{**/*,*}.{js,jsx,ts,tsx}'",
+        "build": "INLINE_RUNTIME_CHUNK=false react-scripts build"
+    },
+    "eslintConfig": {
+        "extends": [
+            "react-app",
+            "react-app/jest"
+        ]
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "prettier": {
+        "tabWidth": 4,
+        "semi": true,
+        "singleQuote": false
+    },
+    "lint-staged": {
+        "./{**/*,*}.{js,jsx,ts,tsx,json,css,scss,md}": [
+            "prettier --write",
+            "git add"
+        ],
+        "./{**/*,*}.{js,jsx,ts,tsx": [
+            "yarn lint",
+            "git add"
+        ]
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "echo testing1111111"
+        }
+    },
+    "devDependencies": {
+        "@testing-library/jest-dom": "^5.11.4",
+        "@testing-library/react": "^11.1.0",
+        "@testing-library/user-event": "^12.1.10",
+        "@types/chrome": "^0.0.145",
+        "@types/jest": "^26.0.15",
+        "@types/node": "^12.0.0",
+        "@types/react": "^17.0.0",
+        "@types/react-dom": "^17.0.0",
+        "@types/styled-components": "^5.1.10",
+        "husky": "^7.0.0",
+        "lint-staged": "^11.0.0",
+        "prettier": "^2.3.2"
+    }
+}
