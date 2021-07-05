@@ -48,7 +48,7 @@ const onWsMessage = (event) => {
             gasPrices,
             timestamp: resp.data.timestamp,
         };
-        console.log(gasNowData);
+        console.debug(gasNowData);
         appData.gasNowData = gasNowData;
 
         renderBadge(parseInt(gasPrices.fast));

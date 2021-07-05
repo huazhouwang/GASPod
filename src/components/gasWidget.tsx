@@ -21,7 +21,7 @@ const PriceLogo = styled.img`
 
 const PriceLabel = styled.span`
     font-size: 10px;
-    color: #9E9E9E;
+    color: #9e9e9e;
 `;
 
 const PriceValue = styled.span`
@@ -48,6 +48,45 @@ const Price = ({
     </PriceContainer>
 );
 
+const selectOrCreateUrl = (url: string) => {
+    const parsedUrl = new URL(url);
+
+    try {
+        chrome.windows.getCurrent((window) => {
+            chrome.tabs.query({ url: `*://${parsedUrl.host}/*` }, (tabs) => {
+                let [tabFound] = tabs.filter((i) => i.windowId === window.id);
+
+                if (!tabFound) {
+                    [tabFound] = tabs;
+                }
+
+                if (
+                    tabFound &&
+                    tabFound.id !== undefined &&
+                    window.id !== undefined
+                ) {
+                    if (tabFound.windowId !== window.id) {
+                        chrome.windows.update(window.id, {
+                            focused: true,
+                            drawAttention: true,
+                        });
+                    }
+
+                    chrome.tabs.update(tabFound.id, {
+                        active: true,
+                        highlighted: true,
+                    });
+                } else {
+                    chrome.tabs.create({ url });
+                }
+            });
+        });
+    } catch (e) {
+        console.error(e);
+        chrome.tabs.create({ url });
+    }
+};
+
 const GasWidget = ({
     rapid,
     fast,
@@ -58,7 +97,7 @@ const GasWidget = ({
     standard: string;
 }) => (
     <WidgetContainer
-        onClick={() => chrome.tabs.create({ url: "https://www.gasnow.org" })}
+        onClick={() => selectOrCreateUrl("https://www.gasnow.org")}
     >
         <Price label={"~15s"} logo={rapidLogo} value={rapid} />
         <Price label={"~1min"} logo={logoFast} value={fast} />
