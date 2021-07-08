@@ -10,6 +10,9 @@ or launch a tiny pop-up window as widget:
 
 ![image](https://user-images.githubusercontent.com/9532423/124857101-48ad9000-dfde-11eb-9172-2f90ff74c021.png)
 
+## Install
+[Chrome](https://chrome.google.com/webstore/detail/gas-pod/diobnnjkbkdpdgenhlgjanifmaimmppp)
+
 ## Dev
 ```
 yarn
