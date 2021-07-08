@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import GasWidget from "./components/gasWidget";
-import logoGithub from "./assets/logo_github.svg";
 import logoOpenNewTap from "./assets/logo_open_in_new_window.svg";
 import { Column, Row } from "./components/basic";
 import TinyLogo from "./components/tinyLogo";
@@ -18,26 +17,6 @@ const BottomRightCorner = styled(Row)`
     align-items: flex-end;
 `;
 
-const TopRightCorner = styled(Row)`
-    position: absolute;
-    right: 8px;
-    top: 8px;
-    justify-content: flex-end;
-    align-items: flex-end;
-`;
-
-const GitHubAction = () => (
-    <BottomRightCorner>
-        <TinyLogo
-            logo={logoGithub}
-            onClick={() =>
-                chrome.tabs.create({
-                    url: "https://github.com/huazhouwang/GASPod",
-                })
-            }
-        />
-    </BottomRightCorner>
-);
 
 const OpenInNewWindowAction = () => {
     const [visible, setVisible] = useState<boolean>(true);
@@ -51,7 +30,7 @@ const OpenInNewWindowAction = () => {
     }, [setVisible]);
 
     return visible ? (
-        <TopRightCorner>
+        <BottomRightCorner title={"Open in a tiny popup"}>
             <TinyLogo
                 logo={logoOpenNewTap}
                 size={16}
@@ -65,7 +44,7 @@ const OpenInNewWindowAction = () => {
                     })
                 }
             />
-        </TopRightCorner>
+        </BottomRightCorner>
     ) : (
         <></>
     );
@@ -106,7 +85,6 @@ const App = () => {
                 <GasWidget rapid={rapid} fast={fast} standard={standard} />
             </WidgetsContainer>
             <OpenInNewWindowAction />
-            <GitHubAction />
         </>
     );
 };
