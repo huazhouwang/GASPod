@@ -1,6 +1,8 @@
 # GAS Pod
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/huazhouwang/gas_pod/blob/main/LICENSE)
 
+A tiny, pure and beautiful ethereum gas price extension, always up to date, powered by GasNow. 
+
 # Preview
 extension:
 
