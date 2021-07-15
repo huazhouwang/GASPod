@@ -24,12 +24,16 @@ const launchWebSocket = () => {
         return;
     }
 
-    console.debug("Binding websocket");
-    ws = new WebSocket("wss://www.gasnow.org/ws");
-    ws.onopen = () => console.debug("Connection open ...");
-    ws.onclose = () => console.debug("Connect closed.");
-    ws.onmessage = onWsMessage;
-    window.websocketIns = ws;
+    try {
+        console.debug("Binding websocket");
+        ws = new WebSocket("wss://www.gasnow.org/ws");
+        ws.onopen = () => console.debug("Connection open ...");
+        ws.onclose = () => console.debug("Connect closed.");
+        ws.onmessage = onWsMessage;
+        window.websocketIns = ws;
+    } catch (e) {
+        console.error(e)
+    }
 };
 
 const normalize = (price) => String((price / 1e9).toFixed(0));
