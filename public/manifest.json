@@ -1,20 +1,20 @@
 {
-    "manifest_version": 2,
-    "version": "1.5",
-    "name": "GAS Pod",
-    "description": "A tiny, pure and beautiful ethereum gas price extension, always up to date, powered by GasNow. ",
-    "icons": {
-        "16": "logo_ethereum_16.png",
-        "48": "logo_ethereum_48.png",
-        "128": "logo_ethereum_128.png"
-    },
-    "browser_action": {
-        "default_popup": "index.html",
-        "default_title": "GAS Pod"
-    },
-    "background": {
-        "persistent": true,
-        "scripts": ["background.js"]
-    },
-    "permissions": ["alarms"]
+  "manifest_version": 2,
+  "version": "1.5",
+  "name": "GAS Pod",
+  "description": "A tiny, pure and beautiful ethereum gas price extension, always up to date, powered by GasNow. ",
+  "icons": {
+    "16": "logo_ethereum_16.png",
+    "48": "logo_ethereum_48.png",
+    "128": "logo_ethereum_128.png"
+  },
+  "browser_action": {
+    "default_popup": "index.html",
+    "default_title": "GAS Pod"
+  },
+  "background": {
+    "persistent": true,
+    "scripts": ["background.js"]
+  },
+  "permissions": ["alarms"]
 }

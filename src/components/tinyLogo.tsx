@@ -1,18 +1,18 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const TinyImg = styled.img<{ size: number }>`
-    width: ${({ size }) => `${size}px`};
-    height: ${({ size }) => `${size}px`};
+  width: ${({ size }) => `${size}px`};
+  height: ${({ size }) => `${size}px`};
 `;
 
 const TinyLogo = ({
-    logo,
-    onClick,
-    size = 14,
+  logo,
+  onClick,
+  size = 14,
 }: {
-    logo: string;
-    onClick: any;
-    size?: number;
+  logo: string;
+  onClick: any;
+  size?: number;
 }) => <TinyImg src={logo} onClick={onClick} size={size} />;
 
 export default TinyLogo;

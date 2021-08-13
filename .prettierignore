@@ -1,5 +1,6 @@
-node_modules
+.idea
 build
+node_modules
 dist
 res
 coverage

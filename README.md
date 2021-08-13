@@ -1,9 +1,11 @@
 # GAS Pod
+
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/huazhouwang/gas_pod/blob/main/LICENSE)
 
-A tiny, pure and beautiful ethereum gas price extension, always up to date, powered by GasNow. 
+A tiny, pure and beautiful ethereum gas price extension, always up to date, powered by GasNow.
 
 # Preview
+
 extension:
 
 ![image](https://user-images.githubusercontent.com/9532423/124857180-6a0e7c00-dfde-11eb-9f45-1924abfc5c78.png)
@@ -13,13 +15,16 @@ or launch a tiny pop-up window as widget:
 ![image](https://user-images.githubusercontent.com/9532423/124857101-48ad9000-dfde-11eb-9172-2f90ff74c021.png)
 
 ## Install
+
 [Chrome](https://chrome.google.com/webstore/detail/gas-pod/diobnnjkbkdpdgenhlgjanifmaimmppp)
 
 ## Dev
+
 ```
 yarn
 yarn build
 ```
+
 click `Load unpacked` button on `Chrome Extensions`, then select the `build` fold
 
 ## License
