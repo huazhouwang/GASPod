@@ -38,42 +38,36 @@ const setUpTasks = () => {
   }
 
   setupIntervalTask(
-    'GAS_PRICE',
+    'BLOCK_NATIVE_GAS_ESTIMATOR',
     () =>
-      fetchGasPrice().then((gasPrices) => {
-        window.chrome.storage.local.set({ gasPrices });
-        return gasPrices;
-      }),
+      fetch('https://blocknative-api.herokuapp.com/data')
+        .then((i) => i.json())
+        .then((blockNativeGasEstimator) => {
+          window.chrome.storage.local.set({ blockNativeGasEstimator });
+          return blockNativeGasEstimator;
+        }),
     5000,
   );
 };
 
-const fetchGasPrice = async () => {
-  const response = await fetch(
-    'https://blocknative-api.herokuapp.com/data',
-  ).then((i) => i.json());
-  const data = response.estimatedPrices || [];
-  const [rapid, fast, standard] = data.map((i) => i.price);
-  return { rapid, fast, standard };
-};
-
 const setupBadgeUpdatingTask = () => {
   const listener = (changes, area) => {
-    if (area === 'local' && changes.gasPrices?.newValue) {
-      const data = changes.gasPrices.newValue;
-      renderBadge(parseInt(data.rapid || 0));
+    if (area === 'local' && changes.blockNativeGasEstimator?.newValue) {
+      renderBadge(changes.blockNativeGasEstimator.newValue);
     }
   };
   window.chrome.storage.onChanged.addListener(listener);
-  window.chrome.storage.local.get('gasPrices', (data) =>
-    renderBadge(parseInt(data.gasPrices?.rapid || 0)),
+  window.chrome.storage.local.get('blockNativeGasEstimator', (data) =>
+    renderBadge(data.blockNativeGasEstimator),
   );
 };
 
-const renderBadge = (price) => {
-  if (!price || price <= 0) {
+const renderBadge = (blockNativeGasEstimator) => {
+  if (!blockNativeGasEstimator) {
     return;
   }
+
+  const price = blockNativeGasEstimator.estimatedPrices[1].price;
 
   let color;
 

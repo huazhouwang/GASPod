@@ -49,7 +49,7 @@ const OpenInNewWindowAction = () => {
   );
 };
 
-const App = () => {
+const BlockNativeGasWidget = () => {
   const [gasPrices, setGasPrices] = useState<any>();
 
   useEffect(() => {
@@ -57,13 +57,23 @@ const App = () => {
       return;
     }
 
-    chrome.storage.local.get('gasPrices', (data) =>
-      setGasPrices(data.gasPrices),
+    const updateGasPrices = (blockNativeGasEstimator: any) => {
+      if (!blockNativeGasEstimator) {
+        return;
+      }
+
+      const [rapid, fast, standard] =
+        blockNativeGasEstimator.estimatedPrices.map((i: any) => i.price);
+      setGasPrices({ rapid, fast, standard });
+    };
+
+    chrome.storage.local.get('blockNativeGasEstimator', (data) =>
+      updateGasPrices(data.blockNativeGasEstimator),
     );
 
     const listener = (changes: any, area: any) => {
-      if (area === 'local' && changes.gasPrices?.newValue) {
-        setGasPrices(changes.gasPrices.newValue);
+      if (area === 'local' && changes.blockNativeGasEstimator?.newValue) {
+        updateGasPrices(changes.blockNativeGasEstimator.newValue);
       }
     };
     chrome.storage.onChanged.addListener(listener);
@@ -72,20 +82,25 @@ const App = () => {
   }, [setGasPrices]);
 
   let { rapid, fast, standard } = gasPrices || {};
+  return (
+    <GasWidget
+      rapid={rapid}
+      fast={fast}
+      standard={standard}
+      onClick={() =>
+        chrome.tabs.create({
+          url: 'https://www.blocknative.com/gas-estimator',
+        })
+      }
+    />
+  );
+};
 
+const App = () => {
   return (
     <>
       <WidgetsContainer>
-        <GasWidget
-          rapid={rapid}
-          fast={fast}
-          standard={standard}
-          onClick={() =>
-            chrome.tabs.create({
-              url: 'https://www.blocknative.com/gas-estimator',
-            })
-          }
-        />
+        <BlockNativeGasWidget />
       </WidgetsContainer>
       <OpenInNewWindowAction />
     </>
