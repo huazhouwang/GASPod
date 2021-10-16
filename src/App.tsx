@@ -50,32 +50,30 @@ const OpenInNewWindowAction = () => {
 };
 
 const App = () => {
-  const [gasNowData, setGasNowData] = useState<any>();
+  const [gasPrices, setGasPrices] = useState<any>();
 
   useEffect(() => {
-    if (!setGasNowData) {
+    if (!setGasPrices) {
       return;
     }
 
     let onClose: any | null = null;
     chrome.runtime.getBackgroundPage((backgroundPage: any) => {
       try {
-        backgroundPage.launchWebSocket && backgroundPage.launchWebSocket();
+        backgroundPage.setUpTask && backgroundPage.setUpTask();
       } catch (e) {
         console.log(e);
       }
 
       onClose = backgroundPage.onAppDataChanged(
-        (appData: any) => appData && setGasNowData(appData.gasNowData),
+        (appData: any) => appData && setGasPrices(appData.gasPrices),
       );
     });
 
     return () => onClose && onClose();
-  }, [setGasNowData]);
+  }, [setGasPrices]);
 
-  let {
-    gasPrices: { rapid, fast, standard },
-  } = gasNowData || { gasPrices: {} };
+  let { rapid, fast, standard } = gasPrices || {};
 
   return (
     <>
