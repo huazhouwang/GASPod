@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import GasWidget from './components/gasWidget';
 import logoOpenNewTap from './assets/logo_open_in_new_window.svg';
-import { Column, Row } from './components/basic';
-import TinyLogo from './components/tinyLogo';
+import { Column, Row } from './widgets/basic/basic';
+import TinyLogo from './widgets/basic/tiny-logo';
+import BlockNativeGasWidget from './widgets/gas-price';
 
 const WidgetsContainer = styled(Column)`
   padding: 16px;
@@ -46,53 +46,6 @@ const OpenInNewWindowAction = () => {
     </BottomRightCorner>
   ) : (
     <></>
-  );
-};
-
-const BlockNativeGasWidget = () => {
-  const [gasPrices, setGasPrices] = useState<any>();
-
-  useEffect(() => {
-    if (!setGasPrices) {
-      return;
-    }
-
-    const updateGasPrices = (blockNativeGasEstimator: any) => {
-      if (!blockNativeGasEstimator) {
-        return;
-      }
-
-      const [rapid, fast, standard] =
-        blockNativeGasEstimator.estimatedPrices.map((i: any) => i.price);
-      setGasPrices({ rapid, fast, standard });
-    };
-
-    chrome.storage.local.get('blockNativeGasEstimator', (data) =>
-      updateGasPrices(data.blockNativeGasEstimator),
-    );
-
-    const listener = (changes: any, area: any) => {
-      if (area === 'local' && changes.blockNativeGasEstimator?.newValue) {
-        updateGasPrices(changes.blockNativeGasEstimator.newValue);
-      }
-    };
-    chrome.storage.onChanged.addListener(listener);
-
-    return () => listener && chrome.storage.onChanged.removeListener(listener);
-  }, [setGasPrices]);
-
-  let { rapid, fast, standard } = gasPrices || {};
-  return (
-    <GasWidget
-      rapid={rapid}
-      fast={fast}
-      standard={standard}
-      onClick={() =>
-        chrome.tabs.create({
-          url: 'https://www.blocknative.com/gas-estimator',
-        })
-      }
-    />
   );
 };
 

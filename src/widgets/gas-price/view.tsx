@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import { Column, Padding, Row, SmallestRoundedWidget } from './basic';
-import rapidLogo from '../assets/logo_rapid.svg';
-import logoFast from '../assets/logo_fast.svg';
-import logoStandard from '../assets/logo_standard.svg';
+import { Column, SizedBox, Row, SmallestRoundedWidget } from '../basic/basic';
+import rapidLogo from '../../assets/logo_rapid.svg';
+import logoFast from '../../assets/logo_fast.svg';
+import logoStandard from '../../assets/logo_standard.svg';
 
 const WidgetContainer = styled(SmallestRoundedWidget)`
   justify-content: space-between;
@@ -40,7 +40,7 @@ const Price = ({
 }) => (
   <PriceContainer>
     <PriceLogo src={logo} />
-    <Padding width={16} />
+    <SizedBox width={16} />
     <Column>
       <PriceValue>{value || '--'} GWEI</PriceValue>
       <PriceLabel>{label}</PriceLabel>
@@ -48,7 +48,7 @@ const Price = ({
   </PriceContainer>
 );
 
-const GasWidget = ({
+const View = ({
   rapid,
   fast,
   standard,
@@ -66,4 +66,4 @@ const GasWidget = ({
   </WidgetContainer>
 );
 
-export default GasWidget;
+export default View;
