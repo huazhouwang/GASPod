@@ -4,15 +4,15 @@
 
 A tiny, pure and beautiful ethereum gas price extension, always up to date, powered by Blocknative.
 
+# Feature
+* Instantly, Accurately
+* Supports EIP1559
+* Supports extension or widget mode
+
 # Preview
-
-extension:
-
-![image](https://user-images.githubusercontent.com/9532423/124857180-6a0e7c00-dfde-11eb-9f45-1924abfc5c78.png)
-
-or launch a tiny pop-up window as widget:
-
-![image](https://user-images.githubusercontent.com/9532423/124857101-48ad9000-dfde-11eb-9172-2f90ff74c021.png)
+| Legacy|   EIP1559   |
+| ---- | ---- |
+|  ![](https://user-images.githubusercontent.com/9532423/137582662-5102d82e-64ea-412b-9716-e10b37375513.png)    |  ![](https://user-images.githubusercontent.com/9532423/137582873-be1ca367-05d1-4b34-b7a7-78a39e29130b.png)|
 
 ## Install
 
