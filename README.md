@@ -16,7 +16,8 @@ A tiny, pure and beautiful ethereum gas price extension, always up to date, powe
 
 ## Install
 
-[Chrome](https://chrome.google.com/webstore/detail/gas-pod/diobnnjkbkdpdgenhlgjanifmaimmppp)
+* [Chrome Web Store](https://chrome.google.com/webstore/detail/gas-pod/diobnnjkbkdpdgenhlgjanifmaimmppp)
+* Download the [release](https://github.com/huazhouwang/GASPod/releases) package and install it in developer mode on chrome
 
 ## Dev
 
