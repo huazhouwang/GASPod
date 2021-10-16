@@ -76,7 +76,16 @@ const App = () => {
   return (
     <>
       <WidgetsContainer>
-        <GasWidget rapid={rapid} fast={fast} standard={standard} />
+        <GasWidget
+          rapid={rapid}
+          fast={fast}
+          standard={standard}
+          onClick={() =>
+            chrome.tabs.create({
+              url: 'https://www.blocknative.com/gas-estimator',
+            })
+          }
+        />
       </WidgetsContainer>
       <OpenInNewWindowAction />
     </>

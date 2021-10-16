@@ -52,16 +52,14 @@ const GasWidget = ({
   rapid,
   fast,
   standard,
+  onClick,
 }: {
   rapid: string;
   fast: string;
   standard: string;
+  onClick: () => void;
 }) => (
-  <WidgetContainer
-    onClick={() =>
-      chrome.tabs.create({ url: 'https://www.blocknative.com/gas-estimator' })
-    }
-  >
+  <WidgetContainer onClick={onClick}>
     <Price label={'~15s'} logo={rapidLogo} value={rapid} />
     <Price label={'~1min'} logo={logoFast} value={fast} />
     <Price label={'~3min'} logo={logoStandard} value={standard} />
