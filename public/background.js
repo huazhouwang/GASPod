@@ -1,61 +1,79 @@
-const appData = {
-  gasPrices: {},
-  updatedTime: 0,
-};
-
-const listeners = [];
-const onAppDataChanged = (listener) => {
-  if (listeners.includes(listener)) {
-    return;
+const setupIntervalTask = (name, task, timeout) => {
+  const updateTimeRecordName = 'INTERVAL_TASK_UPDATE_RECORD';
+  if (typeof window[updateTimeRecordName] === 'undefined') {
+    window[updateTimeRecordName] = {};
   }
 
-  listener(appData);
-  listeners.push(listener);
+  const slotName = `INTERVAL_TASK_${name}_SLOT`;
 
-  return () =>
-    listeners.indexOf(listener) >= 0 &&
-    listeners.splice(listeners.indexOf(listener), 1);
+  const slot = window[slotName];
+  const updatedTime = window[updateTimeRecordName][name];
+
+  if (!slot || !updatedTime || updatedTime < Date.now() - timeout * 2) {
+    if (slot) {
+      console.debug(`Reset slot, taskName: ${name}`);
+      delete window[slotName];
+      clearInterval(slot);
+    }
+
+    window[slotName] = setInterval(async () => {
+      try {
+        const result = await task();
+        window[updateTimeRecordName][name] = Date.now();
+        console.debug(
+          `Update task. taskName: ${name}, updateTime: ${window[updateTimeRecordName][name]}, taskResult: `,
+          result,
+        );
+      } catch (e) {
+        console.error(`Error in interval task. taskName: ${name}, error: ${e}`);
+      }
+    }, timeout);
+  }
 };
 
-const setUpTask = () => {
-  let slot = window.taskSlot;
-
-  if (
-    !slot ||
-    !appData.updatedTime ||
-    appData.updatedTime <= Date.now() - 10000
-  ) {
-    window.taskSlot = undefined;
-    slot && clearInterval(slot);
-    fetchGasPrice();
-    slot = setInterval(fetchGasPrice, 5000);
-    window.taskSlot = slot;
+const setUpTasks = () => {
+  if (!window.BADGER_MONITOR_GASPRICE) {
+    setupBadgeUpdatingTask();
+    window.BADGER_MONITOR_GASPRICE = true;
   }
+
+  setupIntervalTask(
+    'GAS_PRICE',
+    () =>
+      fetchGasPrice().then((gasPrices) => {
+        window.chrome.storage.local.set({ gasPrices });
+        return gasPrices;
+      }),
+    5000,
+  );
 };
 
 const fetchGasPrice = async () => {
-  try {
-    const response = await fetch(
-      'https://blocknative-api.herokuapp.com/data',
-    ).then((i) => i.json());
-    const data = response.estimatedPrices || [];
-    const [rapid, fast, standard] = data.map((i) => i.price);
-    const gasPrices = { rapid, fast, standard };
-    appData.gasPrices = gasPrices;
-    appData.updatedTime = Date.now();
+  const response = await fetch(
+    'https://blocknative-api.herokuapp.com/data',
+  ).then((i) => i.json());
+  const data = response.estimatedPrices || [];
+  const [rapid, fast, standard] = data.map((i) => i.price);
+  return { rapid, fast, standard };
+};
 
-    console.debug('gasPrices: ', gasPrices);
-    renderBadge(parseInt(gasPrices.rapid));
-    listeners.forEach((listener) => listener(appData));
-  } catch (e) {
-    console.error(e);
-  }
+const setupBadgeUpdatingTask = () => {
+  const listener = (changes, area) => {
+    if (area === 'local' && changes.gasPrices?.newValue) {
+      const data = changes.gasPrices.newValue;
+      renderBadge(parseInt(data.rapid || 0));
+    }
+  };
+  window.chrome.storage.onChanged.addListener(listener);
+  window.chrome.storage.local.get('gasPrices', (data) =>
+    renderBadge(parseInt(data.gasPrices?.rapid || 0)),
+  );
 };
 
 const renderBadge = (price) => {
-  window.chrome.browserAction.setBadgeText({
-    text: String(price),
-  });
+  if (!price || price <= 0) {
+    return;
+  }
 
   let color;
 
@@ -67,14 +85,18 @@ const renderBadge = (price) => {
     color = '#E53935';
   }
 
-  window.chrome.browserAction.setBadgeBackgroundColor({ color });
+  Promise.all([
+    window.chrome.browserAction.setBadgeText({
+      text: String(price),
+    }),
+    window.chrome.browserAction.setBadgeBackgroundColor({ color }),
+  ]).catch(console.error);
 };
-
-window.onAppDataChanged = onAppDataChanged;
 
 window.chrome.alarms.clearAll();
 window.chrome.alarms.create('ticker', {
   periodInMinutes: 1,
   when: Date.now(),
 });
-window.chrome.alarms.onAlarm.addListener(setUpTask);
+window.chrome.alarms.onAlarm.addListener(setUpTasks);
+setUpTasks();

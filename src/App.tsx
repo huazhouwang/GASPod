@@ -57,20 +57,18 @@ const App = () => {
       return;
     }
 
-    let onClose: any | null = null;
-    chrome.runtime.getBackgroundPage((backgroundPage: any) => {
-      try {
-        backgroundPage.setUpTask && backgroundPage.setUpTask();
-      } catch (e) {
-        console.log(e);
+    chrome.storage.local.get('gasPrices', (data) =>
+      setGasPrices(data.gasPrices),
+    );
+
+    const listener = (changes: any, area: any) => {
+      if (area === 'local' && changes.gasPrices?.newValue) {
+        setGasPrices(changes.gasPrices.newValue);
       }
+    };
+    chrome.storage.onChanged.addListener(listener);
 
-      onClose = backgroundPage.onAppDataChanged(
-        (appData: any) => appData && setGasPrices(appData.gasPrices),
-      );
-    });
-
-    return () => onClose && onClose();
+    return () => listener && chrome.storage.onChanged.removeListener(listener);
   }, [setGasPrices]);
 
   let { rapid, fast, standard } = gasPrices || {};
