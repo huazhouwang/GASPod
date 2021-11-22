@@ -49,7 +49,9 @@ const BlockNativeGasWidget = () => {
         return;
       }
 
-      const [rapid, fast, standard] = blockNativeGasEstimator.estimatedPrices;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const [rapid, _, fast, __, standard] =
+        blockNativeGasEstimator.estimatedPrices;
       setGasPrices({ rapid, fast, standard });
     };
 

@@ -40,7 +40,9 @@ const setUpTasks = () => {
   setupIntervalTask(
     'BLOCK_NATIVE_GAS_ESTIMATOR',
     () =>
-      fetch('https://blocknative-api.herokuapp.com/data')
+      fetch('https://blocknative-api.herokuapp.com/data', {
+        mode: 'cors',
+      })
         .then((i) => i.json())
         .then((blockNativeGasEstimator) => {
           window.chrome.storage.local.set({ blockNativeGasEstimator });
@@ -67,7 +69,7 @@ const renderBadge = (blockNativeGasEstimator) => {
     return;
   }
 
-  const price = blockNativeGasEstimator.estimatedPrices[1].price;
+  const [{ price }] = blockNativeGasEstimator.estimatedPrices;
 
   let color;
 
